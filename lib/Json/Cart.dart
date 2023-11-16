@@ -1,5 +1,5 @@
 var cart = {
-  "isSuccess": "true",
+  "isSuccess": true,
   "data": {
     "response": {
       "type": "NORMAL",
