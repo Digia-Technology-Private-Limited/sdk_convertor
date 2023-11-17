@@ -1,38 +1,32 @@
 import 'dart:convert';
-import 'package:json_editor/json_editor.dart';
+
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:json_editor/json_editor.dart';
+import 'package:sdk_converter/Json/Cart.dart';
+import 'package:sdk_converter/Json/Catalogue.dart';
+import 'package:sdk_converter/Json/Home.dart';
+import 'package:sdk_converter/Json/MyAccount.dart';
+import 'package:sdk_converter/Json/Order.dart';
+import 'package:sdk_converter/Json/Services.dart';
 import 'package:sdk_converter/WidgetCompactList.dart';
-import 'package:ui_sdk/NavigatorService.dart';
 import 'package:ui_sdk/StandardPage.dart';
-import 'package:ui_sdk/generated/json/base/json_convert_content.dart';
 import 'package:ui_sdk/props/ApiResponse.dart';
 import 'package:ui_sdk/props/UikAction.dart';
-
-import 'Json/Cart.dart';
-import 'Json/Catalogue.dart';
-import 'Json/Home.dart';
-import 'Json/MyAccount.dart';
-import 'Json/Order.dart';
-import 'Json/Services.dart';
 
 String global = "";
 
 class Test extends StatefulWidget {
-  Test();
+  const Test({super.key});
 
   @override
   State<Test> createState() => _TestState();
 }
 
-
-
 class _TestState extends State<Test> {
-
   void onComponentAdded(ApiResponse updatedGlobal) {
-    debugPrint("updated response recieved" );
-    String jsonStu = jsonEncode(updatedGlobal.toJson());
-    debugPrint(jsonStu);
+    debugPrint("updated response received");
+    String jsonStu = jsonEncode(updatedGlobal.data.toJson());
+    // debugPrint(jsonStu);
     // global = jsonEncode(updatedGlobal);
     // setState(() {});
   }
@@ -118,10 +112,19 @@ class _TestState extends State<Test> {
                 Container(
                   alignment: Alignment.center,
                   width: screenWidth * 0.2,
-                  height: screenHeight * 0.4,
-                  decoration: BoxDecoration(border: Border.all(width: 2)),
-                  child: (global != "")
-                      ? WidgetCompactList(globalWidgetResponse: global, onComponentAdded: onComponentAdded,)
+                  height: screenHeight * 0.8,
+                  decoration: const BoxDecoration(
+                    border: Border.symmetric(
+                      horizontal: BorderSide(
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  child: (global.trim().isNotEmpty)
+                      ? WidgetCompactList(
+                          globalWidgetResponse: global,
+                          onComponentAdded: onComponentAdded,
+                        )
                       : const Text("Compact Screen View"),
                 ),
                 Container(
@@ -138,8 +141,17 @@ class _TestState extends State<Test> {
                 SizedBox(
                   width: screenWidth * 0.01,
                 ),
-                SizedBox(
-                  width: screenWidth * 0.1,
+                Container(
+                  alignment: Alignment.center,
+                  width: screenWidth * 0.13,
+                  height: screenHeight * 0.8,
+                  decoration: const BoxDecoration(
+                    border: Border.symmetric(
+                      horizontal: BorderSide(
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
                   child: ElevatedButton(
                     onPressed: () {
                       setState(() {});
@@ -151,12 +163,13 @@ class _TestState extends State<Test> {
                   width: screenWidth * 0.01,
                 ),
                 Container(
-                  width: screenWidth * 0.3,
+                  width: screenWidth * 0.35,
                   height: screenHeight * 0.8,
-                  decoration: BoxDecoration(border: Border.all(width: 1)),
-                  child: (global != "")
+                  decoration: BoxDecoration(border: Border.all()),
+                  child: (global.trim().isNotEmpty)
                       ? TestPage().page
-                      : const Text("Please Enter the json in the editor"),
+                      : const Center(
+                          child: Text("Please Enter the json in the editor")),
                 ),
               ],
             ),
@@ -175,7 +188,7 @@ class TestPage extends StandardPage {
 
   @override
   Set<String?> getActions() {
-    Set<String?> actionList = Set();
+    Set<String?> actionList = {};
     return actionList;
   }
 
@@ -186,18 +199,18 @@ class TestPage extends StandardPage {
 
   void of(UikAction uikAction) {
     // print(uikAction);
-    var context = NavigationService.navigatorKey.currentContext;
+    // var context = NavigationService.navigatorKey.currentContext;
     // print(context);
     String type = uikAction.tap.type;
     switch (type) {
       case "OPEN_WEB":
         {
-          print("OPEN_WEB");
+          debugPrint("OPEN_WEB");
         }
         break;
       default:
         {
-          print("default switch case :(");
+          debugPrint("default switch case :(");
         }
         break;
     }
@@ -205,27 +218,27 @@ class TestPage extends StandardPage {
 
   @override
   getPageContext() {
-    return TestPage;
+    return 'TestPage';
   }
 
   @override
   getConstructorArgs() {
-   return {};
+    return {};
   }
 }
 
 Future<ApiResponse> fetchAlbum(args) async {
-  final queryParameter = {
-    "id": "eb5f37b2-ca34-40a1-83ba-cb161eb55e6e",
-  };
-
-  //https://bc4c-1-38-54-6.ngrok.io
-  final response = await http.get(
-    Uri.parse('https://demo2913052.mockable.io/payment'),
-    headers: {
-      "ngrok-skip-browser-warning": "value",
-    },
-  );
+  // final queryParameter = {
+  //   "id": "eb5f37b2-ca34-40a1-83ba-cb161eb55e6e",
+  // };
+  //
+  // //https://bc4c-1-38-54-6.ngrok.io
+  // final response = await http.get(
+  //   Uri.parse('https://demo2913052.mockable.io/payment'),
+  //   headers: {
+  //     "ngrok-skip-browser-warning": "value",
+  //   },
+  // );
 
   // print(response.body);
 
